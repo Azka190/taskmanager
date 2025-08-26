@@ -5,6 +5,8 @@ import React, { useState } from "react";
 type Task = {
   title: string;
   des: string;
+  priority: "High" | "Medium" | "Low";
+
 };
 
 const Page = () => {
@@ -12,6 +14,7 @@ const Page = () => {
   const [des, setDes] = useState("");
   const [mainTask, setMainTask] = useState<Task[]>([]);
   const [editTask, setEditTask] = useState<number | null>(null);
+  const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,30 +22,32 @@ const Page = () => {
     if (editTask !== null) {
       // ✅ Update existing task
       const updatedTasks = [...mainTask];
-      updatedTasks[editTask] = { title, des };
+      updatedTasks[editTask] = { title, des , priority };
       setMainTask(updatedTasks);
       setEditTask(null);
     } else {
       // ✅ Add new task
-      setMainTask([...mainTask, { title, des }]);
+      setMainTask([...mainTask, { title, des , priority }]);
     }
 
     setTitle("");
     setDes("");
+    setPriority("Medium");
   };
 
   const deleteHandle = (i: number) => {
-    let copyTask = [...mainTask];
+    const copyTask = [...mainTask];
     copyTask.splice(i, 1);
     setMainTask(copyTask);
-
-    // if deleting the one we’re editing → reset form
+  
     if (editTask === i) {
       setEditTask(null);
       setTitle("");
       setDes("");
+      setPriority("Medium");
     }
   };
+  
 
   const editHandle = (index: number) => {
     setEditTask(index);
@@ -59,6 +64,19 @@ const Page = () => {
           <h5 className="font-bold">{t.title}</h5>
           <h6>{t.des}</h6>
         </div>
+
+        <span
+      className={`px-2 py-1 rounded text-white ${
+        t.priority === "High"
+          ? "bg-red-500"
+          : t.priority === "Medium"
+          ? "bg-yellow-500"
+          : "bg-green-500"
+      }`}
+    >
+      {t.priority}
+    </span>
+
 
         <button
           onClick={() => editHandle(i)}
@@ -97,6 +115,16 @@ const Page = () => {
             onChange={(e) => setDes(e.target.value)}
             className="text-2xl border-2 border-zinc-800 px-2"
           />
+
+<select
+  value={priority}
+  onChange={(e) => setPriority(e.target.value as "High" | "Medium" | "Low")}
+  className="text-2xl border-2 border-zinc-800 px-2"
+>
+  <option value="High">High</option>
+  <option value="Medium">Medium</option>
+  <option value="Low">Low</option>
+</select>
           <button className="w-[300px] h-[30px] border-2 border-zinc-800">
             {editTask !== null ? "Update Task" : "Add Task"}
           </button>
