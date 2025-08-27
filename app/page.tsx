@@ -1,45 +1,53 @@
 "use client";
+import TaskForm from "./components/TaskForm";
+import TaskItem from "./components/TaskItem";
+import Completed from "./components/Completed";
+import { Task } from "./components/types";
+import Image from "next/image";
 
 import React, { useState } from "react";
-
-type Task = {
-  title: string;
-  des: string;
-  priority: "High" | "Medium" | "Low";
-
-};
+import TaskStatus from "./components/TaskStatus";
 
 const Page = () => {
   const [title, setTitle] = useState("");
   const [des, setDes] = useState("");
+  const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
   const [mainTask, setMainTask] = useState<Task[]>([]);
   const [editTask, setEditTask] = useState<number | null>(null);
-  const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
+  const [message, setMessage] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (!title.trim() || !des.trim()) {
+      setMessage("Please enter fields");
+      return;
+    }
     if (editTask !== null) {
-      // ✅ Update existing task
       const updatedTasks = [...mainTask];
-      updatedTasks[editTask] = { title, des , priority };
+      updatedTasks[editTask] = {
+        title,
+        des,
+        priority,
+        status: mainTask[editTask].status,
+      };
       setMainTask(updatedTasks);
       setEditTask(null);
     } else {
-      // ✅ Add new task
-      setMainTask([...mainTask, { title, des , priority }]);
+      setMainTask([...mainTask, { title, des, priority, status: "Pending" }]);
     }
 
     setTitle("");
     setDes("");
     setPriority("Medium");
+    setMessage("");
   };
 
   const deleteHandle = (i: number) => {
     const copyTask = [...mainTask];
     copyTask.splice(i, 1);
     setMainTask(copyTask);
-  
+
     if (editTask === i) {
       setEditTask(null);
       setTitle("");
@@ -47,94 +55,120 @@ const Page = () => {
       setPriority("Medium");
     }
   };
-  
 
   const editHandle = (index: number) => {
     setEditTask(index);
     setTitle(mainTask[index].title);
     setDes(mainTask[index].des);
+    setPriority(mainTask[index].priority); // ✅ prefill priority
   };
 
-  let renderTask: JSX.Element | JSX.Element[] = <h2>No task available</h2>;
+  const toggleStatus = (index: number) => {
+    const updatedTasks = [...mainTask];
+    updatedTasks[index].status =
+      updatedTasks[index].status === "Pending" ? "Completed" : "Pending";
+    setMainTask(updatedTasks);
+  };
 
-  if (mainTask.length > 0) {
-    renderTask = mainTask.map((t, i) => (
-      <li key={i} className="flex gap-10 items-center">
-        <div className="flex flex-col gap-1">
-          <h5 className="font-bold">{t.title}</h5>
-          <h6>{t.des}</h6>
-        </div>
+  // Separate pending and completed tasks
+  const pendingTasks = mainTask.filter((t) => t.status === "Pending");
+  const completedTasks = mainTask.filter((t) => t.status === "Completed");
 
-        <span
-      className={`px-2 py-1 rounded text-white ${
-        t.priority === "High"
-          ? "bg-red-500"
-          : t.priority === "Medium"
-          ? "bg-yellow-500"
-          : "bg-green-500"
-      }`}
-    >
-      {t.priority}
-    </span>
+  const getIndexForTask = (task: Task) => mainTask.indexOf(task);
 
+  const toggleStatusByTask = (task: Task) => {
+    const index = getIndexForTask(task);
+    if (index === -1) return;
+    toggleStatus(index);
+  };
 
-        <button
-          onClick={() => editHandle(i)}
-          className="px-2 py-1 bg-yellow-400 rounded"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => deleteHandle(i)}
-          className="px-2 py-1 bg-red-500 text-white rounded"
-        >
-          Delete
-        </button>
-      </li>
-    ));
-  }
+  const editHandleByTask = (task: Task) => {
+    const index = getIndexForTask(task);
+    if (index === -1) return;
+    editHandle(index);
+  };
+
+  const deleteHandleByTask = (task: Task) => {
+    const index = getIndexForTask(task);
+    if (index === -1) return;
+    deleteHandle(index);
+  };
 
   return (
-    <>
-      <div className="flex flex-col justify-center items-center h-screen">
-        <h1 className="text-2xl font-bold w-full text-center">
-          Task Manager App
-        </h1>
-        <form onSubmit={submitHandler} className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="add task"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="text-2xl border-2 border-zinc-800 px-2"
-          />
-          <input
-            type="text"
-            placeholder="enter description"
-            value={des}
-            onChange={(e) => setDes(e.target.value)}
-            className="text-2xl border-2 border-zinc-800 px-2"
-          />
+    <div className="bg-[#F5F5F5] pt-10">
+      <h1 className="font-medium text-4xl text-center text-black mb-10">
+        Task Manager App
+      </h1>
 
-<select
-  value={priority}
-  onChange={(e) => setPriority(e.target.value as "High" | "Medium" | "Low")}
-  className="text-2xl border-2 border-zinc-800 px-2"
->
-  <option value="High">High</option>
-  <option value="Medium">Medium</option>
-  <option value="Low">Low</option>
-</select>
-          <button className="w-[300px] h-[30px] border-2 border-zinc-800">
-            {editTask !== null ? "Update Task" : "Add Task"}
-          </button>
-        </form>
+      <div className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] flex- gap-5">
+        <div className="max-w-[906px] mx-auto flex gap-5 p-5">
+          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px]">
+            <div className="flex justify-between  items-center">
+              <p className="flex gap-1 text-[#FF6767] text-[15px] font-medium">
+                <span>
+                  <Image
+                    src="/img.svg"
+                    alt="clip board"
+                    width={28.18}
+                    height={28.18}
+                  />
+                </span>
+                To-Do
+              </p>
 
-        <div className="p-8 bg-slate-200">
-          <ul>{renderTask}</ul>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowForm(!showForm);
+                }}
+                className="flex items-center gap-1 text-[#A1A3AB] text-xs"
+              >
+                <span>
+                  <Image
+                    src="/plus.svg"
+                    alt="clip board"
+                    width={10}
+                    height={10}
+                  />
+                </span>
+                Add task
+              </a>
+            </div>
+            {showForm && (
+              <TaskForm
+                title={title}
+                des={des}
+                priority={priority}
+                setTitle={setTitle}
+                setDes={setDes}
+                setPriority={setPriority}
+                submitHandler={submitHandler}
+                message={message}
+                editTask={editTask}
+              />
+            )}
+
+            <TaskItem
+              tasks={mainTask.filter((t) => t.status === "Pending")}
+              toggleStatus={toggleStatusByTask}
+              editHandle={editHandleByTask}
+              deleteHandle={deleteHandleByTask}
+            />
+          </div>
+          <div>
+            <div className="w-[466px] ">
+              <div className="bg-[#F5F8FF] mb-4 rounded-lg shadow-2xl p-5 max-w-[436px]">
+                <TaskStatus tasks={mainTask} />
+              </div>
+              <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 max-w-[436px]">
+                <Completed completedTasks={completedTasks} deleteHandle={deleteHandleByTask} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
