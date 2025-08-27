@@ -4,6 +4,8 @@ import TaskItem from "./components/TaskItem";
 import Completed from "./components/Completed";
 import { Task } from "./components/types";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css"
 
 import React, { useState , useEffect } from "react";
 import TaskStatus from "./components/TaskStatus";
@@ -16,6 +18,10 @@ const Page = () => {
   const [editTask, setEditTask] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() =>{
+    AOS.init({})
+  }, [])
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -72,7 +78,7 @@ const Page = () => {
     setEditTask(index);
     setTitle(mainTask[index].title);
     setDes(mainTask[index].des);
-    setPriority(mainTask[index].priority); // ✅ prefill priority
+    setPriority(mainTask[index].priority);
   };
 
   const toggleStatus = (index: number) => {
@@ -108,11 +114,11 @@ const Page = () => {
 
   return (
     <div className="bg-[#F5F5F5] h-screen pt-10">
-      <h1 className="font-medium text-4xl text-center text-black mb-10">
+      <h1  data-aos="fade-up" data-aos-duration="2000" className="font-medium text-4xl text-center text-black mb-10">
         Task Manager App
       </h1>
 
-      <div className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
+      <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
         <div className="max-w-[906px] mx-auto flex gap-5 p-5">
           <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px]">
             <div className="flex justify-between  items-center">
