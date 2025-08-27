@@ -83,7 +83,7 @@ const Page = () => {
   };
 
   // Separate pending and completed tasks
-  const pendingTasks = mainTask.filter((t) => t.status === "Pending");
+  // const pendingTasks = mainTask.filter((t) => t.status === "Pending");
   const completedTasks = mainTask.filter((t) => t.status === "Completed");
 
   const getIndexForTask = (task: Task) => mainTask.indexOf(task);
