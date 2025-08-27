@@ -95,12 +95,12 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-[#F5F5F5] pt-10">
+    <div className="bg-[#F5F5F5] h-screen pt-10">
       <h1 className="font-medium text-4xl text-center text-black mb-10">
         Task Manager App
       </h1>
 
-      <div className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] flex- gap-5">
+      <div className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
         <div className="max-w-[906px] mx-auto flex gap-5 p-5">
           <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px]">
             <div className="flex justify-between  items-center">
