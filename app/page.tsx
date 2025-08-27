@@ -5,7 +5,7 @@ import Completed from "./components/Completed";
 import { Task } from "./components/types";
 import Image from "next/image";
 
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import TaskStatus from "./components/TaskStatus";
 
 const Page = () => {
@@ -16,6 +16,18 @@ const Page = () => {
   const [editTask, setEditTask] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      setMainTask(JSON.parse(savedTasks));
+    }
+  }, []);
+
+  // ✅ Save tasks to localStorage whenever mainTask changes
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(mainTask));
+  }, [mainTask]);
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
