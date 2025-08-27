@@ -120,7 +120,7 @@ const Page = () => {
 
       <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
         <div className="max-w-[906px] mx-auto flex gap-5 p-5">
-          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px]">
+          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px] h-[500px] overflow-y-scroll">
             <div className="flex justify-between  items-center">
               <p className="flex gap-1 text-[#FF6767] text-[15px] font-medium">
                 <span>
