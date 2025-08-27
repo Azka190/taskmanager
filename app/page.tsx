@@ -179,7 +179,7 @@ const Page = () => {
               <div className="bg-[#F5F8FF] mb-4 rounded-lg shadow-2xl p-5 max-w-[436px]">
                 <TaskStatus tasks={mainTask} />
               </div>
-              <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 max-w-[436px]">
+              <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 max-w-[436px] h-[300px] overflow-y-scroll">
                 <Completed completedTasks={completedTasks} deleteHandle={deleteHandleByTask} />
               </div>
             </div>
