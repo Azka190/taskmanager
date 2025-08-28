@@ -18,6 +18,14 @@ const Page = () => {
   const [editTask, setEditTask] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [search, setSearch] = useState("");
+ 
+
+  const filteredTasks = mainTask.filter(
+    (t) =>
+      t.status === "Pending" &&
+      t.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   useEffect(() =>{
     AOS.init({})
@@ -30,7 +38,9 @@ const Page = () => {
     }
   }, []);
 
-  // ✅ Save tasks to localStorage whenever mainTask changes
+  
+
+
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(mainTask));
   }, [mainTask]);
@@ -88,7 +98,7 @@ const Page = () => {
     setMainTask(updatedTasks);
   };
 
-  // Separate pending and completed tasks
+
   // const pendingTasks = mainTask.filter((t) => t.status === "Pending");
   const completedTasks = mainTask.filter((t) => t.status === "Completed");
 
@@ -118,9 +128,18 @@ const Page = () => {
         Task Manager App
       </h1>
 
+     
+
       <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] w-full mx-auto bg-[#F5F8FF] rounded flex- gap-5">
-        <div className="max-w-[906px] mx-auto md:flex gap-5 p-5">
+       
+      
+      <div className="max-w-[906px] mx-auto md:flex gap-5 p-5">
+   
           <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 md:w-[466px] w-full h-[550px] overflow-y-scroll">
+          <div className="flex justify-center ">
+        <input type="text" placeholder="Search" onChange={(e) => 
+          setSearch(e.target.value)} className="w-[400px] bg-[#F5F8FF] shadow-lg rounded h-10 px-4 focus:outline-none mt-2 mb-4 border border-[#A1A3AB]/[23%] " />
+      </div> 
             <div className="flex justify-between  items-center">
               <p className="flex gap-1 text-[#FF6767] text-[15px] font-medium">
                 <span>
@@ -168,7 +187,7 @@ const Page = () => {
             )}
 
             <TaskItem
-              tasks={mainTask.filter((t) => t.status === "Pending")}
+              tasks={filteredTasks}
               toggleStatus={toggleStatusByTask}
               editHandle={editHandleByTask}
               deleteHandle={deleteHandleByTask}
