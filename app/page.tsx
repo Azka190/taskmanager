@@ -120,7 +120,7 @@ const Page = () => {
 
       <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
         <div className="max-w-[906px] mx-auto flex gap-5 p-5">
-          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px] h-[500px] overflow-y-scroll">
+          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px] h-[550px] overflow-y-scroll">
             <div className="flex justify-between  items-center">
               <p className="flex gap-1 text-[#FF6767] text-[15px] font-medium">
                 <span>
@@ -176,7 +176,7 @@ const Page = () => {
           </div>
           <div>
             <div className="w-[466px] ">
-              <div className="bg-[#F5F8FF] mb-4 rounded-lg shadow-2xl p-5 max-w-[436px]">
+              <div className="bg-[#F5F8FF] mb-4 rounded-lg h-[230px] shadow-2xl p-5 max-w-[436px]">
                 <TaskStatus tasks={mainTask} />
               </div>
               <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 max-w-[436px] h-[300px] overflow-y-scroll">
