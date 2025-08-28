@@ -113,14 +113,14 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-[#F5F5F5] h-screen pt-10">
-      <h1  data-aos="fade-up" data-aos-duration="2000" className="font-medium text-4xl text-center text-black mb-10">
+    <div className="bg-[#F5F5F5]  pt-10 px-4 pb-6">
+      <h1  data-aos="fade-up" data-aos-duration="2000" className="font-medium sm:text-4xl text-2xl text-center text-black mb-10">
         Task Manager App
       </h1>
 
-      <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] mx-auto bg-[#F5F8FF] rounded flex- gap-5">
-        <div className="max-w-[906px] mx-auto flex gap-5 p-5">
-          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 w-[466px] h-[550px] overflow-y-scroll">
+      <div data-aos="fade-up" data-aos-duration="3000" className="border border-[#A1A3AB]/[63%] max-w-[958px] w-full mx-auto bg-[#F5F8FF] rounded flex- gap-5">
+        <div className="max-w-[906px] mx-auto md:flex gap-5 p-5">
+          <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 md:w-[466px] w-full h-[550px] overflow-y-scroll">
             <div className="flex justify-between  items-center">
               <p className="flex gap-1 text-[#FF6767] text-[15px] font-medium">
                 <span>
@@ -175,11 +175,11 @@ const Page = () => {
             />
           </div>
           <div>
-            <div className="w-[466px] ">
-              <div className="bg-[#F5F8FF] mb-4 rounded-lg h-[230px] shadow-2xl p-5 max-w-[436px]">
+            <div className="md:w-[466px] w-full mt-5 md:mt-0 ">
+              <div className="bg-[#F5F8FF] mb-4 rounded-lg h-[230px] shadow-2xl p-5 md:max-w-[436px] w-full">
                 <TaskStatus tasks={mainTask} />
               </div>
-              <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 max-w-[436px] h-[300px] overflow-y-scroll">
+              <div className="bg-[#F5F8FF] shadow-2xl  rounded-lg p-5 h-[300px] overflow-y-scroll md:max-w-[436px] w-full">
                 <Completed completedTasks={completedTasks} deleteHandle={deleteHandleByTask} />
               </div>
             </div>
